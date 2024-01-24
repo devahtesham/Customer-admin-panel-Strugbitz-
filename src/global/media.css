@@ -1,0 +1,18 @@
+@media only screen and (max-width:992px) {
+    .side-bar-container {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        transform: translateX(-100%);
+        transition-duration: 0.5s;
+        background-color: #000000bd;
+    }
+    .side-bar{
+        width: 260px;
+    }
+    .side-bar-overlay {
+        width: 100vw;
+        background: #000000a6;
+    }
+
+}

@@ -2,7 +2,10 @@
     overflow-x: hidden;
     overflow-y: scroll;
 }
-
-.customer-listing-container{
-    
+.customer-img{
+    width: 109px;
+    height: auto;
+}
+.customer-email .edit-del-buttons{
+    flex: 0 0 41%;
 }

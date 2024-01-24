@@ -4,6 +4,7 @@ import App from './App.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import './global/global.css'
+import './global/media.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <App />

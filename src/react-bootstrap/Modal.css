@@ -1,0 +1,12 @@
+.customer-modal-header {
+    background: url('../assets/img/modalHeader.png') no-repeat center center/cover;
+}
+
+.customer-modal-header h3 {
+    font-weight: 700;
+}
+.upload-btn {
+    color: #4caf8a;
+    text-decoration: underline;
+    cursor: pointer;
+}
