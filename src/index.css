@@ -1,0 +1,30 @@
+
+*{
+  margin: 0;
+  padding: 0;
+}
+
+:root{
+  --font-lato: 'Lato', sans-serif;
+  --bg-green-dark:#015249;
+  --bg-green-light:#57BC90;
+
+}
+
+body{
+  font-family: var(--font-lato);
+}
+
+
+/* global classes */
+.bg-green-dark{
+  background-color: var(--bg-green-dark);
+}
+.bg-green-light{
+  background-color: var(--bg-green-light);
+}
+.main{
+  background-color: #F3F3F3;
+}
+
+

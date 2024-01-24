@@ -1,0 +1,15 @@
+.side-bar{
+    color: #fff;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    height: 98vh;
+    position: sticky;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+.panel-tab{
+    background-color: #043933;
+    font-size: 20px;
+    cursor: pointer;
+}
