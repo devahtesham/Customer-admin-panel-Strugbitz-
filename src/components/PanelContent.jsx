@@ -1,32 +1,58 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./PanelContent.css"
-import { Col, Container, Row, Table } from 'react-bootstrap'
+import { Col, Container, Row, Table, Form, InputGroup } from 'react-bootstrap'
 import { IoIosAdd } from "react-icons/io";
 import { FaSort } from "react-icons/fa";
 import customerImg from "../assets/img/customer-img.png"
 import { GiHamburgerMenu } from "react-icons/gi";
-import {ModalComp,DeleteModalComp} from '../react-bootstrap';
+import { ModalComp, DeleteModalComp } from '../react-bootstrap';
 import DeleteModal from '../react-bootstrap/DeleteModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { AddNewUser, GetUsersListing } from '../store/Actions/users';
+import Loader from '../Loader/Loader';
+import '../react-bootstrap/Modal.css'
+
 
 const PanelContent = () => {
   const [show, setShow] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
+  const [removeEl, setRemoveEl] = useState(null);
+  const [isUpdatedCall,setIsUpdatedCall] = useState(false)
 
+  // dispatching an action
+  const dispatch = useDispatch();
+  const { isLoading, users } = useSelector(state => state.GetUsersReducer);
+  // console.log('users:- ',users)
+
+
+  useEffect(() => {
+    dispatch(GetUsersListing())
+  }, [])
 
   // for add modal
   const addModalCloseHandler = () => setShow(false);
   const addModalShowHandler = () => setShow(true);
 
-  // for delete modal
+  // close delete modal
   const deleteModalCloseHandler = () => setShowDelModal(false);
-  const deleteModalShowHandler = () => setShowDelModal(true);
 
-  const editCustomerHandler = ()=>{
+  // open a delete modal
+  const deleteModalShowHandler = (index) => {
+    setShowDelModal(true)
+    setRemoveEl(index)
+  };
+
+  // for edit button
+  const editCustomerHandler = (index,user) => {
     addModalShowHandler()
   }
-  const deleteCustomerHandler = ()=>{
-    deleteModalShowHandler()
+
+  // for delete button
+  const deleteCustomerHandler = (index) => {
+    
   }
+
+
   return (
     <>
       <Container fluid>
@@ -62,31 +88,39 @@ const PanelContent = () => {
 
 
                   {/* customer listing */}
+                  <div className='position-relative'>
+                    {
+                      isLoading ? <Loader /> : (
+                        users.map((user,index) => (
+                          <Row key={user.id} className='customer-listing py-2 rounded-2 bg-white align-items-center mt-4 overflow-auto'>
+                            <Col md={3} xs={4} className='text-center'>
+                              <div className='d-flex align-items-center justify-content-sm-start justify-content-center gap-5'>
+                                <div className="customer-img d-sm-block d-none">
+                                  <img src={user.avatar} alt="customer-img" className='customer-img w-100' />
+                                </div>
+                                <span>{user.id}</span>
+                              </div>
+                            </Col>
+                            <Col md={3} xs={4} className='text-center'>
+                              <div className="customer-name" >
+                                <span>{user.first_name} {user.last_name}</span>
+                              </div>
+                            </Col>
+                            <Col md={6} xs={4}>
+                              <div className="customer-email d-flex align-items-center justify-content-between flex-wrap" >
+                                <span>{user.email}</span>
+                                <div className="edit-del-buttons d-flex gap-3 align-items-center">
+                                  <button onClick={editCustomerHandler(index,user)} className='custom-btn custom-btn-sm btn-sm-1'>Edit</button>
+                                  <button onClick={()=>deleteModalShowHandler(index)} className='custom-btn custom-btn-sm btn-sm-2'>Delete</button>
+                                </div>
+                              </div>
+                            </Col>
+                          </Row>
+                        ))
+                      )
+                    }
+                  </div>
 
-                  <Row className='customer-listing py-2 rounded-2 bg-white align-items-center mt-4 overflow-auto'>
-                    <Col md={3} xs={4} className='text-center'>
-                      <div className='d-flex align-items-center justify-content-sm-start justify-content-center gap-5'>
-                        <div className="customer-img d-sm-block d-none">
-                          <img src={customerImg} alt="customer-img" className='customer-img w-100' />
-                        </div>
-                        <span>001</span>
-                      </div>
-                    </Col>
-                    <Col md={3} xs={4} className='text-center'>
-                      <div className="customer-name" >
-                        <span>Jordan Joseph</span>
-                      </div>
-                    </Col>
-                    <Col md={6} xs={4}>
-                      <div className="customer-email d-flex align-items-center justify-content-between flex-wrap" >
-                        <span>randomemail@gmail.com</span>
-                        <div className="edit-del-buttons d-flex gap-3 align-items-center">
-                          <button onClick={editCustomerHandler} className='custom-btn custom-btn-sm btn-sm-1'>Edit</button>
-                          <button onClick={deleteCustomerHandler} className='custom-btn custom-btn-sm btn-sm-2'>Delete</button>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
                 </div>
               </div>
             </Col>
@@ -96,10 +130,20 @@ const PanelContent = () => {
       </Container>
 
       {/* Add Modal */}
-      <ModalComp show={show} onHide={addModalCloseHandler} />
+      <ModalComp
+        show={show}
+        onHide={addModalCloseHandler}
+        addModalCloseHandler={addModalCloseHandler}
+        isUpdatedCall={isUpdatedCall}
+      />
+
+
+
 
       {/* Delete Modal */}
-      <DeleteModal show={showDelModal} onHide={deleteModalCloseHandler} />
+      <DeleteModal show={showDelModal} onHide={deleteModalCloseHandler} onDelete={()=>{
+        deleteCustomerHandler(index)
+      }} currentEl={removeEl} />
     </>
   )
 }
