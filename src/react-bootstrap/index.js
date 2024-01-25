@@ -1,2 +1,3 @@
-export {default as ModalComp} from "./ModalComp"
-export {default as DeleteModalComp} from "./DeleteModal"
+export {default as AddModalComp} from "./AddModalComp"
+export {default as DeleteModalComp} from "./DeleteModalComp"
+export {default as EditModalComp} from "./EditModalComp"

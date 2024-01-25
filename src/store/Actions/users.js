@@ -8,7 +8,8 @@ const GetUsersListing = () => {
     return async (dispatch) => {
         let allSavedUsers = localStorage.getItem('users');
         if(allSavedUsers){
-            let users = JSON.parse(localStorage.getItem('users'))
+            let users = JSON.parse(localStorage.getItem('users'));
+            console.log(users)
             dispatch({
                 type: ACTION_TYPES.FETCH_USERS_SUCCESS,
                 payload: users
@@ -23,11 +24,19 @@ const GetUsersListing = () => {
                 })
                 const response = await axios.get(url);
                 const data = response.data.data
+                
+                // transformation in response due to showing image file name
+                const transfromedData = data.map(user => {
+                    return{
+                        ...user,
+                        file_name:user.avatar.split("/").pop()
+                    }
+                })
     
                 // for disabling loader and sending data to reducer 
                 dispatch({
                     type: ACTION_TYPES.FETCH_USERS_SUCCESS,
-                    payload: data
+                    payload: transfromedData
                 })
             } catch (error) {
                 dispatch({
@@ -51,6 +60,16 @@ const AddNewUser = (userObj) => {
     }
 }
 
+// action for edit user
+const UpdateUser = (updatedObj) => {
+    return (dispatch) => {
+        dispatch({
+            type: ACTION_TYPES.EDIT_USER,
+            payload: updatedObj
+        })
+    }
+}
+
 // action for delete user
 const DeleteUser = (id) => {
     return (dispatch) => {
@@ -62,5 +81,5 @@ const DeleteUser = (id) => {
 }
 
 export {
-    GetUsersListing,AddNewUser,DeleteUser
+    GetUsersListing,AddNewUser,DeleteUser,UpdateUser
 }

@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import "./PanelContent.css"
-import { Col, Container, Row, Table, Form, InputGroup } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { IoIosAdd } from "react-icons/io";
 import { FaSort } from "react-icons/fa";
-import customerImg from "../assets/img/customer-img.png"
 import { GiHamburgerMenu } from "react-icons/gi";
-import { ModalComp, DeleteModalComp } from '../react-bootstrap';
-import DeleteModal from '../react-bootstrap/DeleteModal';
+import { DeleteModalComp, AddModalComp, EditModalComp } from '../react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { AddNewUser, GetUsersListing } from '../store/Actions/users';
+import { GetUsersListing } from '../store/Actions/users';
 import Loader from '../Loader/Loader';
 import '../react-bootstrap/Modal.css'
 
 
 const PanelContent = () => {
-  const [show, setShow] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
   const [removeEl, setRemoveEl] = useState(null);
-  const [isUpdatedCall,setIsUpdatedCall] = useState(false)
+  const [currentUser, setCurrentUser] = useState({})
 
   // dispatching an action
   const dispatch = useDispatch();
@@ -30,28 +29,32 @@ const PanelContent = () => {
   }, [])
 
   // for add modal
-  const addModalCloseHandler = () => setShow(false);
-  const addModalShowHandler = () => setShow(true);
+  const addModalCloseHandler = () => setShowAddModal(false);
+  const addModalShowHandler = () => setShowAddModal(true);
+
+  // for edit modal
+  const editModalAddHandler = () => setShowEditModal(true)
+  const editModalCloseHandler = () => setShowEditModal(false);
 
   // close delete modal
+  const deleteModalAddHandler = () => setShowDelModal(true)
   const deleteModalCloseHandler = () => setShowDelModal(false);
 
   // open a delete modal
   const deleteModalShowHandler = (index) => {
-    setShowDelModal(true)
+    deleteModalAddHandler()
     setRemoveEl(index)
   };
 
   // for edit button
-  const editCustomerHandler = (index,user) => {
-    addModalShowHandler()
-  }
+  const editCustomerHandler = (index, user) => {
+    editModalAddHandler()
+    setCurrentUser({
+      user,
+      index
+    })
 
-  // for delete button
-  const deleteCustomerHandler = (index) => {
-    
   }
-
 
   return (
     <>
@@ -91,8 +94,8 @@ const PanelContent = () => {
                   <div className='position-relative'>
                     {
                       isLoading ? <Loader /> : (
-                        users.map((user,index) => (
-                          <Row key={user.id} className='customer-listing py-2 rounded-2 bg-white align-items-center mt-4 overflow-auto'>
+                        users.map((user, index) => (
+                          <Row key={index} className='customer-listing py-2 rounded-2 bg-white align-items-center mt-4 overflow-auto'>
                             <Col md={3} xs={4} className='text-center'>
                               <div className='d-flex align-items-center justify-content-sm-start justify-content-center gap-5'>
                                 <div className="customer-img d-sm-block d-none">
@@ -110,8 +113,8 @@ const PanelContent = () => {
                               <div className="customer-email d-flex align-items-center justify-content-between flex-wrap" >
                                 <span>{user.email}</span>
                                 <div className="edit-del-buttons d-flex gap-3 align-items-center">
-                                  <button onClick={editCustomerHandler(index,user)} className='custom-btn custom-btn-sm btn-sm-1'>Edit</button>
-                                  <button onClick={()=>deleteModalShowHandler(index)} className='custom-btn custom-btn-sm btn-sm-2'>Delete</button>
+                                  <button onClick={() => editCustomerHandler(index, user)} className='custom-btn custom-btn-sm btn-sm-1'>Edit</button>
+                                  <button onClick={() => deleteModalShowHandler(index)} className='custom-btn custom-btn-sm btn-sm-2'>Delete</button>
                                 </div>
                               </div>
                             </Col>
@@ -130,20 +133,20 @@ const PanelContent = () => {
       </Container>
 
       {/* Add Modal */}
-      <ModalComp
-        show={show}
+      <AddModalComp
+        show={showAddModal}
         onHide={addModalCloseHandler}
-        addModalCloseHandler={addModalCloseHandler}
-        isUpdatedCall={isUpdatedCall}
+      />
+
+      <EditModalComp
+        show={showEditModal}
+        onHide={editModalCloseHandler}
+        currentUser={currentUser}
       />
 
 
-
-
       {/* Delete Modal */}
-      <DeleteModal show={showDelModal} onHide={deleteModalCloseHandler} onDelete={()=>{
-        deleteCustomerHandler(index)
-      }} currentEl={removeEl} />
+      <DeleteModalComp show={showDelModal} onHide={deleteModalCloseHandler} currentEl={removeEl} />
     </>
   )
 }

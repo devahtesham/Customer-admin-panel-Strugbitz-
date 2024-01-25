@@ -44,6 +44,15 @@ const GetUsersReducer = (state = INITIAL_STATE, action) => {
                 users:[...filteredUsers]
             }
 
+        case ACTION_TYPES.EDIT_USER:
+            const {index,...updatedUser} = action.payload;
+            state.users.splice(index,1,updatedUser)
+            localStorage.setItem('users',JSON.stringify([...state.users]))
+            return{
+                ...state,
+                users:[...state.users]
+            }
+
         default:
             return {
                 ...state
