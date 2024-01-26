@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
-import { GetUsersReducer } from "./usersReducer";
+import { GetUsersReducer} from "../usersReducer";
+import SideBarHandlingReducer from "../sideBarReducer";
 
 const CombineReducer = combineReducers({
-    GetUsersReducer
+    GetUsersReducer,
+    SideBarHandlingReducer,
 })
 
 export default CombineReducer

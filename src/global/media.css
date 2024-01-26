@@ -4,11 +4,16 @@
         inset: 0;
         width: 100%;
         transform: translateX(-100%);
-        transition-duration: 0.5s;
+        transition-duration: 0.4s;
         background-color: #000000bd;
+        z-index: 2;
+    }
+    .side-bar-container.open{
+        transform: translateX(0%);
     }
     .side-bar{
         width: 260px;
+        height: 100%;
     }
     .side-bar-overlay {
         width: 100vw;

@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react'
 import "./PanelContent.css"
 import { Col, Container, Row } from 'react-bootstrap'
 import { IoIosAdd } from "react-icons/io";
-import { FaSort } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { DeleteModalComp, AddModalComp, EditModalComp } from '../react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetUsersListing } from '../store/Actions/users';
+import { GetUsersListing, OpenSideBar, SortByEmail, SortById, SortByName } from '../store/Actions/users';
 import Loader from '../Loader/Loader';
 import '../react-bootstrap/Modal.css'
+import SortFilterComp from '../react-bootstrap/SortFilterComp';
+import { FaSortAlphaDown } from "react-icons/fa";
+import { FaSort } from "react-icons/fa";
+
 
 
 const PanelContent = () => {
@@ -56,6 +59,23 @@ const PanelContent = () => {
 
   }
 
+  // sorting data
+  const sortData = (e) => {
+    let selectedValue = e.target.value;
+    if (selectedValue === 'Name') {
+      dispatch(SortByName())
+    } else if (selectedValue === 'Email') {
+      dispatch(SortByEmail())
+    } else {
+      dispatch(SortById())
+    }
+  }
+
+  // handle side bar on mobile
+  const openSideBarHandler = ()=>{
+    dispatch(OpenSideBar())
+  }
+
   return (
     <>
       <Container fluid>
@@ -63,7 +83,7 @@ const PanelContent = () => {
           <div className='panel-content-header bg-white py-2'>
             <Row className='justify-content-center'>
               <Col lg={11} className='d-flex align-items-center gap-sm-4'>
-                <span className='d-lg-none d-block ps-2'><GiHamburgerMenu size={25} /></span>
+                <span className='d-lg-none d-block ps-2' onClick={openSideBarHandler}><GiHamburgerMenu size={25} /></span>
                 <h1 className='m-0 fw-bold py-3 text-lg-start text-center w-100'>CUSTOMERS</h1>
               </Col>
             </Row>
@@ -75,17 +95,27 @@ const PanelContent = () => {
                   <button onClick={addModalShowHandler} className='custom-btn btn-main d-flex align-items-center gap-3'><span><IoIosAdd size={22} /></span>Add New Customer</button>
                 </div>
                 <div className="customer-listing-table mt-sm-5 mt-4">
+                  <div className="sort-filters">
+                    <Row className='justify-content-sm-end justify-content-center'>
+                      <Col xl={2} lg={3} md={3} sm={4} xs={11} className='d-flex align-items-center gap-3'>
+                        <div className='w-25'>
+                          <FaSortAlphaDown size={23} />
+                        </div>
+                        <SortFilterComp options={['Id', 'Name', 'Email']} onChange={sortData} />
+                      </Col>
+                    </Row>
+                  </div>
 
                   {/* customer listing header */}
                   <Row className='listing-header bg-green-light py-2 rounded-2 mb-4'>
                     <Col md={3} xs={4} className='text-center'>
-                      <h6 className='m-0 fw-bolder'>Customer ID <span><FaSort size={14} /></span></h6>
+                      <h6 className='m-0 fw-bolder'>Customer ID</h6>
                     </Col>
                     <Col md={3} xs={4} className='text-center'>
-                      <h6 className='m-0 fw-bolder'>Customer Name <span><FaSort size={14} /></span></h6>
+                      <h6 className='m-0 fw-bolder'>Customer Name</h6>
                     </Col>
                     <Col md={6} xs={4}>
-                      <h6 className='m-0 fw-bolder'>Email<span><FaSort size={14} /></span></h6>
+                      <h6 className='m-0 fw-bolder'>Emai</h6>
                     </Col>
                   </Row>
 

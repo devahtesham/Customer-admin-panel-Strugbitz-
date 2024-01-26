@@ -1,8 +1,10 @@
-import ACTION_TYPES from "../../ActionTypes/ActionTypes"
+import { sortByEmail, sortByID, sortByName } from "../../global/global"
+import ACTION_TYPES from "../ActionTypes/ActionTypes"
 
 const INITIAL_STATE = {
     users: [],
-    isLoading: ACTION_TYPES
+    isLoading: ACTION_TYPES,
+    isSideBarOpen:false,
 }
 
 const GetUsersReducer = (state = INITIAL_STATE, action) => {
@@ -23,6 +25,7 @@ const GetUsersReducer = (state = INITIAL_STATE, action) => {
             }
         case ACTION_TYPES.ADD_USER:
             // transformation for adding a dynamic id in sequence
+            console.log("id:- ",state.users.length+1)
             let newUser = {
                 ...action.payload,
                 id:state.users.length+1
@@ -53,6 +56,22 @@ const GetUsersReducer = (state = INITIAL_STATE, action) => {
                 users:[...state.users]
             }
 
+        case ACTION_TYPES.SORT_BY_NAME:
+            let sortByNameData = sortByName(state.users);
+            return{
+                users: [...sortByNameData]
+            }
+        case ACTION_TYPES.SORT_BY_EMAIL:
+            let sortByEmailData = sortByEmail(state.users);
+            return{
+                users: [...sortByEmailData]
+            }
+        case ACTION_TYPES.SORT_BY_ID:
+            let sortByIdData = sortByID(state.users);
+            return{
+                users: [...sortByIdData]
+            }
+
         default:
             return {
                 ...state
@@ -60,6 +79,7 @@ const GetUsersReducer = (state = INITIAL_STATE, action) => {
     }
 
 }
+
 export {
     GetUsersReducer
 }
