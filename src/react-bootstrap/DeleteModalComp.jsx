@@ -4,6 +4,7 @@ import { Col, Form, InputGroup, Row } from 'react-bootstrap';
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { useDispatch } from 'react-redux';
 import { DeleteUser } from '../store/Actions/users';
+import { successNotify } from '../Taostify/Toastify';
 
 function DeleteModal(props) {
     const dispatch = useDispatch();
@@ -11,6 +12,7 @@ function DeleteModal(props) {
     // for delete user
     const deleteCustomerHandler = ()=>{
         dispatch(DeleteUser(props.currentEl));
+        successNotify("Customer Deleted Successfully !")
         props.onHide()
     }
 

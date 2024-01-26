@@ -11,6 +11,7 @@ import '../react-bootstrap/Modal.css'
 import SortFilterComp from '../react-bootstrap/SortFilterComp';
 import { FaSortAlphaDown } from "react-icons/fa";
 import { FaSort } from "react-icons/fa";
+import { successNotify } from '../Taostify/Toastify';
 
 
 
@@ -64,11 +65,15 @@ const PanelContent = () => {
     let selectedValue = e.target.value;
     if (selectedValue === 'Name') {
       dispatch(SortByName())
+      successNotify("Sorted By Name Successfully !")
     } else if (selectedValue === 'Email') {
       dispatch(SortByEmail())
+      successNotify("Sorted By Email Successfully !")
     } else {
       dispatch(SortById())
+      successNotify("Sorted By Id Successfully !")
     }
+    
   }
 
   // handle side bar on mobile

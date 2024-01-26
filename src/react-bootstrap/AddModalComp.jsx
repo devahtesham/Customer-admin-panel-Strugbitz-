@@ -4,6 +4,7 @@ import { Col, Form, InputGroup, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { AddNewUser } from '../store/Actions/users';
 import { useDispatch } from 'react-redux';
+import { errorNotify, successNotify } from '../Taostify/Toastify';
 
 function AddModalComp(props) {
     const [name, setName] = useState("")
@@ -17,7 +18,6 @@ function AddModalComp(props) {
 
         if (file) {
             const reader = new FileReader();
-
             reader.onloadend = () => {
                 // console.log('file:- ', file)
                 setSelectedImage({
@@ -34,7 +34,7 @@ function AddModalComp(props) {
     const customerHandler = () => {
 
         if (!name || !email || !selectedImage.url) {
-            alert("Required Fields are missing !")
+            errorNotify("Required Fields are missing !")
             return
         }
 
@@ -52,6 +52,7 @@ function AddModalComp(props) {
 
         // calling add customer action
         dispatch(AddNewUser(objToSend))
+        successNotify("New Customer Added !")
 
         props.onHide()
         setName("");

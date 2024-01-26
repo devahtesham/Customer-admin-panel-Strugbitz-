@@ -4,6 +4,7 @@ import { Col, Form, InputGroup, Row, useAccordionButton } from 'react-bootstrap'
 import { useEffect, useState } from 'react';
 import { AddNewUser, UpdateUser } from '../store/Actions/users';
 import { useDispatch } from 'react-redux';
+import { errorNotify, successNotify } from '../Taostify/Toastify';
 
 function EditModalComp(props) {
     const {user,index} = props.currentUser
@@ -40,7 +41,7 @@ function EditModalComp(props) {
     // edit new customer handling func
     const editCustomerHandler = (index) => {
         if (!name || !email || !selectedImage.url) {
-            alert("Required Fields are missing !")
+            errorNotify("Required Fields are missing !")
             return
         }
 
@@ -60,7 +61,7 @@ function EditModalComp(props) {
 
         // calling edit  customer action
         dispatch(UpdateUser(updatedDataObj))
-
+        successNotify("Customer Updated Sucessfully !")
 
         props.onHide()
         setName("");
